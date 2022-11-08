@@ -1,4 +1,4 @@
-package com.proof.beersearch
+package com.proof.beersearch.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.proof.beersearch.ui.theme.BeerSearchTheme
+import com.proof.beersearch.view.ui.theme.BeerSearchTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
