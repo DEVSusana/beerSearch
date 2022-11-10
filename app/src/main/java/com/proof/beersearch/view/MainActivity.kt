@@ -10,21 +10,35 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
+import com.proof.beersearch.domain.repository.Repository
+import com.proof.beersearch.presentation.viewModel.ViewModel
+import com.proof.beersearch.presentation.viewModel.ViewModelFactory
+import com.proof.beersearch.view.compose.NavigationComponent
 import com.proof.beersearch.view.ui.theme.BeerSearchTheme
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+    lateinit var viewModel: ViewModel
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var repository: Repository
+
+    @OptIn(ExperimentalCoilApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ViewModel::class.java]
         setContent {
-            BeerSearchTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            val navController = rememberNavController()
+            NavigationComponent(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
     }
 }
