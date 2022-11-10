@@ -9,11 +9,11 @@ import javax.inject.Inject
 
 class RemoteDataSourceImpl @Inject constructor(private val apiService: ApiService) :
     RemoteDataSource {
-    override suspend fun getListBeer(page: Int, pagePer: Int): Response<ApiResponse> {
+    override suspend fun getListBeer(page: Int, pagePer: Int): Response<List<ApiResponse>> {
         return apiService.getBeersList(page,pagePer)
     }
 
-    override suspend fun getIdBeer(id: Int): Response<ApiResponse> {
+    override suspend fun getIdBeer(id: Int): Response<List<ApiResponse>> {
         return apiService.getBeersById(id)
     }
 
@@ -21,7 +21,7 @@ class RemoteDataSourceImpl @Inject constructor(private val apiService: ApiServic
         name: String,
         page: Int,
         pagePer: Int
-    ): Response<ApiResponse> {
+    ): Response<List<ApiResponse>> {
         return apiService.getSearchBeer(name, page, pagePer)
     }
 }

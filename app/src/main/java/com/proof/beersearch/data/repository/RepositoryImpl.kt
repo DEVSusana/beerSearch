@@ -10,11 +10,11 @@ import javax.inject.Inject
 class RepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) : Repository {
-    override suspend fun getListBeer(page: Int, pagePer: Int): Resource<ApiResponse> {
+    override suspend fun getListBeer(page: Int, pagePer: Int): Resource<List<ApiResponse>> {
         return responseToResource(remoteDataSource.getListBeer(page, pagePer))
     }
 
-    override suspend fun getIdBeer(id: Int): Resource<ApiResponse> {
+    override suspend fun getIdBeer(id: Int): Resource<List<ApiResponse>> {
         return responseToResource(remoteDataSource.getIdBeer(id))
     }
 
@@ -22,11 +22,11 @@ class RepositoryImpl @Inject constructor(
         name: String,
         page: Int,
         pagePer: Int
-    ): Resource<ApiResponse> {
+    ): Resource<List<ApiResponse>> {
         return responseToResource(remoteDataSource.getBeerSearch(name, page, pagePer))
     }
 
-    private fun responseToResource(response: Response<ApiResponse>): Resource<ApiResponse> {
+    private fun responseToResource(response: Response<List<ApiResponse>>): Resource<List<ApiResponse>> {
         if (response.isSuccessful) {
             response.body()?.let { result ->
                 return Resource.Success(result)

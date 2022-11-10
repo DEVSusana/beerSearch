@@ -37,11 +37,11 @@ fun DetailView(viewModel: ViewModel, id: Int) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (detail != null) {
-                        detail!!.data?.beerList?.get(0)
+                        detail!!.data?.get(0)
                             ?.let { it1 -> ImageBeer(detail = it1) }
                     }
                     Column {
-                       detail!!.data?.beerList?.get(0)?.let {
+                       detail!!.data?.get(0)?.let {
                            Text(text = it.name)
                            Spacer(modifier = Modifier.height(4.dp))
                            Text(text = it.description)

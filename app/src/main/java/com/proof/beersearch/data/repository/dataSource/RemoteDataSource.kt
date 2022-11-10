@@ -5,7 +5,7 @@ import com.proof.beersearch.data.model.ApiResponse
 import retrofit2.Response
 
 interface RemoteDataSource {
-    suspend fun getListBeer(page: Int, pagePer: Int): Response<ApiResponse>
-    suspend fun getIdBeer(id: Int): Response<ApiResponse>
-    suspend fun getBeerSearch(name: String, page: Int, pagePer: Int): Response<ApiResponse>
+    suspend fun getListBeer(page: Int, pagePer: Int): Response<List<ApiResponse>>
+    suspend fun getIdBeer(id: Int): Response<List<ApiResponse>>
+    suspend fun getBeerSearch(name: String, page: Int, pagePer: Int): Response<List<ApiResponse>>
 }

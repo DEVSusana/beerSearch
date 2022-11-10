@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import com.proof.beersearch.data.model.Beer
+import com.proof.beersearch.data.model.ApiResponse
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ListItem(
     navController: NavController,
-    detail: Beer,
+    detail: ApiResponse,
     index: Int,
     selectedIndex: Int
 ) {

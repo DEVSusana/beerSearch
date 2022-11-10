@@ -13,11 +13,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.proof.beersearch.data.model.Beer
+import com.proof.beersearch.data.model.ApiResponse
 
 @ExperimentalCoilApi
 @Composable
-fun ImageBeer(detail: Beer) {
+fun ImageBeer(detail: ApiResponse) {
     Image(
         painter = rememberImagePainter(
             data = detail.imageURL

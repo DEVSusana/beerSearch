@@ -12,7 +12,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import coil.annotation.ExperimentalCoilApi
-import com.proof.beersearch.data.model.Beer
+import com.proof.beersearch.data.model.ApiResponse
 import com.proof.beersearch.presentation.viewModel.ViewModel
 
 @ExperimentalCoilApi
@@ -20,7 +20,7 @@ import com.proof.beersearch.presentation.viewModel.ViewModel
 fun DisplayList(navController: NavController, viewModel: ViewModel) {
     val selectedIndex by remember { mutableStateOf(-1) }
     val resultList = viewModel.resultListBeer
-    val resultItems: LazyPagingItems<Beer> = resultList.collectAsLazyPagingItems()
+    val resultItems: LazyPagingItems<ApiResponse> = resultList.collectAsLazyPagingItems()
     Surface(color = MaterialTheme.colors.background) {
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)

@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.proof.beersearch.data.Utils.Resource
 import com.proof.beersearch.data.model.ApiResponse
-import com.proof.beersearch.data.model.Beer
 import com.proof.beersearch.domain.usecase.GetDetailUseCase
 import com.proof.beersearch.domain.usecase.GetListUseCase
 import com.proof.beersearch.domain.usecase.GetSearchUseCase
@@ -61,11 +60,11 @@ class ViewModel(
 
     }
 
-    val resultListBeer: Flow<PagingData<Beer>> = Pager(PagingConfig(pageSize = 50)){
+    val resultListBeer: Flow<PagingData<ApiResponse>> = Pager(PagingConfig(pageSize = 50)){
         ResultDataSource()
     }.flow.cachedIn(viewModelScope)
 
-    private val _getBeerDetail: MutableLiveData<Resource<ApiResponse>> = MutableLiveData()
+    private val _getBeerDetail = MutableLiveData<Resource<List<ApiResponse>>>()
     val getBeerDetail get() = _getBeerDetail
 
     fun getBeerDetailResponse(id: Int) = viewModelScope.launch (Dispatchers.IO){
@@ -83,7 +82,7 @@ class ViewModel(
     }
 
 
-    val resultSearchBeer: Flow<PagingData<Beer>> = Pager(PagingConfig(pageSize = 50)){
+    val resultSearchBeer: Flow<PagingData<List<ApiResponse>>> = Pager(PagingConfig(pageSize = 50)){
         ResultSearchDataSource(name.value.toString())
     }.flow.cachedIn(viewModelScope)
 

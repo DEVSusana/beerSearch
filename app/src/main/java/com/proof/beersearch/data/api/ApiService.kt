@@ -9,19 +9,19 @@ interface ApiService {
     @GET("beers")
     fun getBeersById(
         @Query("ids") id: Int
-    ): Response<ApiResponse>
+    ): Response<List<ApiResponse>>
 
     @GET("beers")
     fun getBeersList(
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
-    ): Response<ApiResponse>
+    ): Response<List<ApiResponse>>
 
     @GET("beers")
     fun getSearchBeer(
         @Query("beer_name") beerName: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
-    ): Response<ApiResponse>
+    ): Response<List<ApiResponse>>
 
 }
