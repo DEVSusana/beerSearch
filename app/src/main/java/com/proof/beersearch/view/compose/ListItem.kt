@@ -45,8 +45,6 @@ fun ListItem(
                 Column {
                     Text(text = detail.name, style = MaterialTheme.typography.h5)
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = detail.description, style = MaterialTheme.typography.body1)
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }

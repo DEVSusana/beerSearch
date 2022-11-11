@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import androidx.paging.compose.LazyPagingItems
 import com.proof.beersearch.data.Utils.Resource
 import com.proof.beersearch.data.model.ApiResponse
 import com.proof.beersearch.domain.usecase.GetDetailUseCase
@@ -29,6 +30,7 @@ class ViewModel(
 ) : AndroidViewModel(app) {
 
     val name = MutableLiveData<String>()
+    lateinit var resultItems: LazyPagingItems<ApiResponse>
 
     private fun isNetworkAvailable(context: Context?): Boolean {
         if (context == null) return false
@@ -82,7 +84,7 @@ class ViewModel(
     }
 
 
-    val resultSearchBeer: Flow<PagingData<List<ApiResponse>>> = Pager(PagingConfig(pageSize = 50)){
+    val resultSearchBeer: Flow<PagingData<ApiResponse>> = Pager(PagingConfig(pageSize = 50)){
         ResultSearchDataSource(name.value.toString())
     }.flow.cachedIn(viewModelScope)
 

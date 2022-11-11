@@ -21,7 +21,7 @@ class ResultDataSource: PagingSource<Int, ApiResponse>() {
             LoadResult.Page(
                 data = beerList.body()!!,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = nextPage
+                nextKey = nextPage + 1
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
