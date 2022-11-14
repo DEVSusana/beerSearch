@@ -28,12 +28,6 @@ fun NavigationComponent(
     ) {
         composable("list") {
             val textState = remember { mutableStateOf(TextFieldValue("")) }
-            if(textState.value.text.isNotEmpty()){
-                viewModel.name.value = textState.value.text
-                val resultList = viewModel.resultSearchBeer
-                viewModel.resultItems = resultList.collectAsLazyPagingItems()
-
-            }
             Column {
                 SearchView(textState)
                 DisplayList(navController = navController, viewModel, state = textState)
