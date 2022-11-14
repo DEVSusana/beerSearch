@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
     lateinit var repository: Repository
 
     @SuppressLint("CheckResult")
-    @OptIn(ExperimentalCoilApi::class)
+    @ExperimentalCoilApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[ViewModel::class.java]

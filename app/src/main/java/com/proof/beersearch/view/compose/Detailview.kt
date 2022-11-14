@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
 import coil.annotation.ExperimentalCoilApi
 import com.proof.beersearch.data.Utils.Resource
 import com.proof.beersearch.data.model.ApiResponse
@@ -24,12 +25,9 @@ import com.proof.beersearch.presentation.viewModel.ViewModel
 @Composable
 fun DetailView(viewModel: ViewModel, id: Int) {
     viewModel.getBeerDetailResponse(id)
-
+    val detail = MutableLiveData(viewModel.getBeerDetail.value)
     when (viewModel.getBeerDetail.value) {
         is Resource.Success -> {
-            val detail by remember {
-                mutableStateOf(viewModel.getBeerDetail.value?.data)
-            }
             viewModel.getBeerDetail.value?.data.let {
                 Card(
                     modifier = Modifier
@@ -45,12 +43,10 @@ fun DetailView(viewModel: ViewModel, id: Int) {
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (detail != null) {
-                            detail?.get(0)
-                                ?.let { it1 -> ImageBeer(detail = it1) }
-                        }
+                        detail.value?.data?.get(0)
+                            ?.let { it1 -> ImageBeer(detail = it1) }
                         Column {
-                            detail?.get(0)?.let {
+                            detail.value?.data?.get(0)?.let {
                                 Text(text = it.name)
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(text = it.description)

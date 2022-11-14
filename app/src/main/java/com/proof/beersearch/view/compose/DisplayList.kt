@@ -33,6 +33,10 @@ fun DisplayList(
         val resultSearchList = viewModel.resultSearchBeer
         resultItems = resultSearchList.collectAsLazyPagingItems()
     }
+    /**
+     * the endpoint concerning the search by name,
+     * does not work properly and returns to the pager continuous data from empty arrays.
+     * */
 
     Surface(color = MaterialTheme.colors.background) {
         LazyColumn(
@@ -41,7 +45,7 @@ fun DisplayList(
             if (state.value.text.isNotEmpty()) {
                 resultItems.refresh()
             }
-           itemsIndexed(
+            itemsIndexed(
                 resultItems
             ) { index, item ->
                 if (item != null) {
