@@ -18,13 +18,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import com.proof.beersearch.presentation.viewModel.ViewModel
 
 @Composable
-fun SearchView(state: MutableState<TextFieldValue>) {
+fun SearchView(state: MutableState<TextFieldValue>, viewModel: ViewModel) {
     TextField(
         value = state.value,
         onValueChange = { value ->
             state.value = value
+            viewModel.setName(value.text)
+            viewModel.invalidateResultDataSource()
         },
         modifier = Modifier.fillMaxWidth(),
         textStyle = TextStyle(color = White, fontSize = 18.sp),
@@ -43,6 +47,7 @@ fun SearchView(state: MutableState<TextFieldValue>) {
                     onClick = {
                         state.value =
                             TextFieldValue("")
+                        viewModel.invalidateResultDataSource()
                     }
                 ) {
                     Icon(
@@ -56,6 +61,7 @@ fun SearchView(state: MutableState<TextFieldValue>) {
             }
         },
         singleLine = true,
+        placeholder = { Text(text = "Search Beer", color = White) },
         shape = RectangleShape,
         colors = TextFieldDefaults.textFieldColors(
             textColor = White,

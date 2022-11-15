@@ -1,10 +1,15 @@
 package com.proof.beersearch.view.compose
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -21,30 +26,19 @@ import com.proof.beersearch.presentation.viewModel.ViewModel
 @Composable
 fun DisplayList(
     navController: NavController, viewModel: ViewModel,
-    state: MutableState<TextFieldValue>
+    state: MutableState<TextFieldValue>, modifier: Modifier = Modifier
 ) {
     val selectedIndex by remember { mutableStateOf(-1) }
-    var resultItems: LazyPagingItems<ApiResponse>
-    val resultList = viewModel.resultListBeer
-    resultItems = resultList.collectAsLazyPagingItems()
-
-    if (state.value.text.isNotEmpty()) {
-        viewModel.name.value = state.value.text
-        val resultSearchList = viewModel.resultSearchBeer
-        resultItems = resultSearchList.collectAsLazyPagingItems()
+    val resultItems: LazyPagingItems<ApiResponse> = if (state.value.text.isNotEmpty()) {
+        viewModel.resultSearchBeer.collectAsLazyPagingItems()
+    } else {
+        viewModel.resultListBeer.collectAsLazyPagingItems()
     }
-    /**
-     * the endpoint concerning the search by name,
-     * does not work properly and returns to the pager continuous data from empty arrays.
-     * */
 
     Surface(color = MaterialTheme.colors.background) {
-        LazyColumn(
+        LazyColumn(modifier = modifier,
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            if (state.value.text.isNotEmpty()) {
-                resultItems.refresh()
-            }
             itemsIndexed(
                 resultItems
             ) { index, item ->
@@ -55,7 +49,6 @@ fun DisplayList(
 
         }
     }
-
     resultItems.apply {
         when {
             loadState.refresh is LoadState.Loading -> {

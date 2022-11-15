@@ -5,24 +5,19 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import androidx.paging.compose.LazyPagingItems
 import com.proof.beersearch.data.Utils.Resource
 import com.proof.beersearch.data.model.ApiResponse
 import com.proof.beersearch.domain.usecase.GetDetailUseCase
 import com.proof.beersearch.domain.usecase.GetListUseCase
 import com.proof.beersearch.domain.usecase.GetSearchUseCase
 import com.proof.beersearch.view.pagin.ResultDataSource
-import com.proof.beersearch.view.pagin.ResultSearchDataSource
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class ViewModel(
     private val app: Application,
@@ -31,7 +26,10 @@ class ViewModel(
     private val getSearchUseCase: GetSearchUseCase
 ) : AndroidViewModel(app) {
 
-    val name = MutableLiveData<String>()
+    var name = mutableStateOf("")
+    private set
+
+    lateinit var resultDataSource: ResultDataSource
 
     private fun isNetworkAvailable(context: Context?): Boolean {
         if (context == null) return false
@@ -63,8 +61,8 @@ class ViewModel(
 
     }
 
-    val resultListBeer: Flow<PagingData<ApiResponse>> = Pager(PagingConfig(pageSize = 50)) {
-        ResultDataSource()
+    val resultListBeer = Pager(PagingConfig(pageSize = 50)) {
+        ResultDataSource("").also { resultDataSource = it  }
     }.flow.cachedIn(viewModelScope)
 
     private val _getBeerDetail = MutableLiveData<Resource<List<ApiResponse>>>()
@@ -85,9 +83,17 @@ class ViewModel(
     }
 
 
-    val resultSearchBeer: Flow<PagingData<ApiResponse>> = Pager(PagingConfig(pageSize = 50)) {
-        ResultSearchDataSource(name.value.toString())
+    val resultSearchBeer = Pager(PagingConfig(pageSize = 50)) {
+        ResultDataSource(name.value).also { resultDataSource = it  }
     }.flow.cachedIn(viewModelScope)
+
+    fun invalidateResultDataSource(){
+        resultDataSource.invalidate()
+    }
+
+    fun setName(name: String){
+        this.name.value = name
+    }
 
 
 }

@@ -1,10 +1,19 @@
 package com.proof.beersearch.view.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -28,9 +37,14 @@ fun NavigationComponent(
     ) {
         composable("list") {
             val textState = remember { mutableStateOf(TextFieldValue("")) }
-            Column {
-                SearchView(textState)
-                DisplayList(navController = navController, viewModel, state = textState)
+            Scaffold(topBar = {
+                TopAppBar(
+                    backgroundColor = MaterialTheme.colors.primary
+                ) {
+                    SearchView(textState, viewModel)
+                }
+            }) { padding ->
+                DisplayList(navController = navController, viewModel, state = textState, modifier = Modifier.padding(padding))
             }
         }
         composable(
