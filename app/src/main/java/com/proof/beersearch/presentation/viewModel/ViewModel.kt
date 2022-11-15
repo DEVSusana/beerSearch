@@ -27,7 +27,7 @@ class ViewModel(
 ) : AndroidViewModel(app) {
 
     var name = mutableStateOf("")
-    private set
+        private set
 
     lateinit var resultDataSource: ResultDataSource
 
@@ -62,10 +62,10 @@ class ViewModel(
     }
 
     val resultListBeer = Pager(PagingConfig(pageSize = 50)) {
-        ResultDataSource("").also { resultDataSource = it  }
+        ResultDataSource("").also { resultDataSource = it }
     }.flow.cachedIn(viewModelScope)
 
-    private val _getBeerDetail = MutableLiveData<Resource<List<ApiResponse>>>()
+    private val _getBeerDetail: MutableLiveData<Resource<List<ApiResponse>>> = MutableLiveData()
     val getBeerDetail get() = _getBeerDetail
 
     fun getBeerDetailResponse(id: Int) = viewModelScope.launch(Dispatchers.IO) {
@@ -84,14 +84,14 @@ class ViewModel(
 
 
     val resultSearchBeer = Pager(PagingConfig(pageSize = 50)) {
-        ResultDataSource(name.value).also { resultDataSource = it  }
+        ResultDataSource(name.value).also { resultDataSource = it }
     }.flow.cachedIn(viewModelScope)
 
-    fun invalidateResultDataSource(){
+    fun invalidateResultDataSource() {
         resultDataSource.invalidate()
     }
 
-    fun setName(name: String){
+    fun setName(name: String) {
         this.name.value = name
     }
 
