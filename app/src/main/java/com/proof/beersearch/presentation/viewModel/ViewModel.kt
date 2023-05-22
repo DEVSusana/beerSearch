@@ -7,9 +7,12 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.proof.beersearch.data.Utils.Resource
 import com.proof.beersearch.data.model.ApiResponse
 import com.proof.beersearch.domain.usecase.GetDetailUseCase
@@ -43,9 +46,11 @@ class ViewModel(
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
                         return true
                     }
+
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
                         return true
                     }
+
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
                         return true
                     }
@@ -65,20 +70,22 @@ class ViewModel(
         ResultDataSource("").also { resultDataSource = it }
     }.flow.cachedIn(viewModelScope)
 
-    private val _getBeerDetail: MutableLiveData<Resource<List<ApiResponse>>> = MutableLiveData()
-    val getBeerDetail get() = _getBeerDetail
+    private val _getBeerDetail: MutableLiveData<Resource<List<ApiResponse>>> by lazy {
+        MutableLiveData<Resource<List<ApiResponse>>>()
+    }
+    val getBeerDetail : LiveData<Resource<List<ApiResponse>>> get() = _getBeerDetail
 
     fun getBeerDetailResponse(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        getBeerDetail.postValue(Resource.Loading())
+        _getBeerDetail.postValue(Resource.Loading())
         try {
             if (isNetworkAvailable(app)) {
                 val apiResult = getDetailUseCase.execute(id)
-                getBeerDetail.postValue(apiResult)
+                _getBeerDetail.postValue(apiResult)
             } else {
-                getBeerDetail.postValue(Resource.Error("Internet is not available"))
+                _getBeerDetail.postValue(Resource.Error("Internet is not available"))
             }
         } catch (e: Exception) {
-            getBeerDetail.postValue(Resource.Error(e.message.toString()))
+            _getBeerDetail.postValue(Resource.Error(e.message.toString()))
         }
     }
 

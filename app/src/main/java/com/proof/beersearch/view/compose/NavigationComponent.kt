@@ -44,14 +44,22 @@ fun NavigationComponent(
                     SearchView(textState, viewModel)
                 }
             }) { padding ->
-                DisplayList(navController = navController, viewModel, state = textState, modifier = Modifier.padding(padding))
+                DisplayList(
+                    navController = navController,
+                    viewModel,
+                    state = textState,
+                    modifier = Modifier.padding(padding)
+                )
             }
         }
         composable(
             "details/{id}",
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
-            backStackEntry.arguments?.getInt("id")?.let { DetailView(viewModel, it) }
+            backStackEntry.arguments?.getInt("id")?.let {
+                DetailView(viewModel, it)
+            }
         }
     }
+
 }

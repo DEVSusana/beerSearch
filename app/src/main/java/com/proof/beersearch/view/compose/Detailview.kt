@@ -2,31 +2,41 @@ package com.proof.beersearch.view.compose
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.proof.beersearch.data.Utils.Resource
+import com.proof.beersearch.data.model.ApiResponse
 import com.proof.beersearch.presentation.viewModel.ViewModel
 
 @ExperimentalCoilApi
 @Composable
 fun DetailView(viewModel: ViewModel, id: Int) {
-    viewModel.getBeerDetailResponse(id)
+    LaunchedEffect(id) {
+        viewModel.getBeerDetailResponse(id)
+    }
+    val detail by viewModel.getBeerDetail.observeAsState()
 
-    when (viewModel.getBeerDetail.value) {
+    when (detail) {
         is Resource.Success -> {
-            val detail = viewModel.getBeerDetail.value
             Card(
                 modifier = Modifier
                     .padding(10.dp)
@@ -41,12 +51,10 @@ fun DetailView(viewModel: ViewModel, id: Int) {
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (detail != null) {
-                        detail.data?.get(0)
-                            ?.let { it1 -> ImageBeer(detail = it1) }
-                    }
+                    (detail as Resource.Success<List<ApiResponse>>).data?.get(0)
+                        ?.let { it1 -> ImageBeer(detail = it1) }
                     Column {
-                        detail?.data?.get(0)?.let {
+                        (detail as Resource.Success<List<ApiResponse>>).data?.get(0)?.let {
                             Text(text = it.name, style = MaterialTheme.typography.h6)
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(text = it.description, Modifier.padding(15.dp))
