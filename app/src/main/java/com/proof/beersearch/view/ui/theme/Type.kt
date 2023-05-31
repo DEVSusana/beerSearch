@@ -1,4 +1,4 @@
-package com.proof.beersearch.ui.theme
+package com.proof.beersearch.view.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
